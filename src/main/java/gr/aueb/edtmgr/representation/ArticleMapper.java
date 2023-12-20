@@ -6,13 +6,12 @@ import gr.aueb.edtmgr.persistence.JournalRepository;
 import jakarta.inject.Inject;
 import org.mapstruct.*;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "cdi",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-imports = {ResearcherRepresentation.class, HashSet.class, Collectors.class})
+imports = {HashSet.class, Collectors.class})
 public abstract class ArticleMapper {
 
     @Inject
