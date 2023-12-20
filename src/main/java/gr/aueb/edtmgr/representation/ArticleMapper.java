@@ -9,7 +9,7 @@ import org.mapstruct.*;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "cdi",
+@Mapper(componentModel = "jakarta",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
 imports = {HashSet.class, Collectors.class})
 public abstract class ArticleMapper {
