@@ -44,7 +44,6 @@ public class ArticleResource {
                 .created(location)
                 .entity(articleMapper.toRepresentation(entity))
                 .build();
-
     }
 
 
