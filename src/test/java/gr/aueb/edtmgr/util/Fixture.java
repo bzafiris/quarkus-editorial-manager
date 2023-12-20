@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 public class Fixture {
 
+    /**
+     * Caution, web server listens by default on 8081 on test container
+     */
     public static String API_ROOT  = "http://localhost:8081";
 
     public static ArticleRepresentation getArticleRepresentation(){
