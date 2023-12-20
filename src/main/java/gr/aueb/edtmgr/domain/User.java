@@ -16,7 +16,7 @@ public class User {
     protected Integer id;
 
     @Embedded
-    protected PersonalInfo personalInfo;
+    protected PersonalInfo personalInfo = new PersonalInfo();
 
     public User() {
     }

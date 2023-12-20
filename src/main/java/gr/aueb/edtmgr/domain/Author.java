@@ -14,7 +14,7 @@ public class Author {
     private Integer id;
 
     @Embedded
-    private PersonalInfo personalInfo;
+    private PersonalInfo personalInfo = new PersonalInfo();
 
     public Author() {
     }
@@ -23,20 +23,39 @@ public class Author {
         this.personalInfo = new PersonalInfo(firstName, lastName, affiliation, email);
     }
 
-    public String getEmail(){
-        return personalInfo.getEmail();
+    public Integer getId() {
+        return id;
+    }
+
+    public void setFirstName(String firstName){
+        this.personalInfo.setFirstName(firstName);
     }
 
     public String getFirstName(){
-        return personalInfo.getFirstName();
+        return this.personalInfo.getFirstName();
     }
 
     public String getLastName(){
-        return personalInfo.getLastName();
+        return this.personalInfo.getLastName();
     }
 
     public String getAffiliation(){
-        return personalInfo.getAffiliation();
+        return this.personalInfo.getAffiliation();
+    }
+
+    public String getEmail(){
+        return this.personalInfo.getEmail();
+    }
+
+    public void setLastName(String lastName){
+        this.personalInfo.setLastName(lastName);
+    }
+
+    public void setAffiliation(String affiliation){
+        this.personalInfo.setAffiliation(affiliation);
+    }
+    public void setEmail(String email){
+        this.personalInfo.setEmail(email);
     }
 
     @Override

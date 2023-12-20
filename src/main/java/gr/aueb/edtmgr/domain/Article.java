@@ -54,6 +54,10 @@ public class Article {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -103,7 +107,7 @@ public class Article {
     }
 
     public Set<Author> getAuthors() {
-        return new HashSet<>(authors);
+        return authors;
     }
 
     public void addAuthor(Author author) {
