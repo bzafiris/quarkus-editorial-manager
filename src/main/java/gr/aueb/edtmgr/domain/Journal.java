@@ -17,7 +17,7 @@ public class Journal {
     @Column(name="issn", length=200, nullable=false, unique = true)
     private String issn;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "editor_id", nullable = false)
     private Editor editor;
 

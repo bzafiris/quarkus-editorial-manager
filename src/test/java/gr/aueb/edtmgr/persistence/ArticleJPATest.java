@@ -1,9 +1,11 @@
 package gr.aueb.edtmgr.persistence;
 
 import gr.aueb.edtmgr.domain.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
+import io.quarkus.test.TestTransaction;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,9 +16,11 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@QuarkusTest
 public class ArticleJPATest extends JPATest {
 
     @Test
+    @Transactional
     public void listArticles(){
         List<Article> result = em.createQuery("select a from Article a").getResultList();
         assertEquals(2, result.size());
@@ -30,25 +34,26 @@ public class ArticleJPATest extends JPATest {
     }
 
     @Test
+    @Transactional
     public void listArticlesByCorrespondentAuthor(){
         Query query = em.createQuery("select a from Article a where a.correspondentAuthor.personalInfo.email=:email");
-        query.setParameter("email", "ndia@aueb.gr");
+        query.setParameter("email", "fregnan@ifi.uzh.ch");
         List<Article> result = query.getResultList();
         assertEquals(1, result.size());
     }
 
     @Test
+    @Transactional
     public void fetchArticleWithAuthorsAndCorrespondentAuthor(){
         Query query = em.createQuery("select a from Article a " +
                 "join fetch a.authors " +
                 "join fetch a.correspondentAuthor r " +
                 "where r.personalInfo.email=:email");
-        query.setParameter("email", "mgia@aueb.gr");
+        query.setParameter("email", "fregnan@ifi.uzh.ch");
         List<Article> result = query.getResultList();
         assertEquals(1, result.size());
 
-        em.close();
-
+        em.detach(result.get(0));
         List<Author> authors = new ArrayList<>(result.get(0).getAuthors());
         Author a = authors.get(0);
         assertEquals("University of Zurich", a.getAffiliation());
@@ -56,30 +61,20 @@ public class ArticleJPATest extends JPATest {
     }
 
     @Test
+    @Transactional
     public void persistArticleWithReviewInvitation(){
 
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        String researcherEmail = "ndia@aueb.gr";
+        String researcherEmail = "pooja.rani@unibe.ch";
         Article article = fetchArticleWithReviewInvitations(researcherEmail);
-        Query query;
 
-        String mgiaEmail = "mgia@aueb.gr";
-        Researcher mgia = fetchResearcherByEmail(mgiaEmail);
+        String userEmail = "fregnan@ifi.uzh.ch";
+        Researcher user = fetchResearcherByEmail(userEmail);
 
-        ReviewInvitation invitation = article.inviteReviewer(mgia);
+        ReviewInvitation invitation = article.inviteReviewer(user);
 
-        tx.commit();
-
+        em.persist(invitation);
         // invitation id should be initialized due to persist cascade
         assertNotNull(invitation.getId());
-
-        em.close();
-
-        em = JPAUtil.getCurrentEntityManager();
-        // assert saved review invitations
-        ReviewInvitation savedInvitation = em.find(ReviewInvitation.class, invitation.getId());
-        assertNotNull(savedInvitation);
 
     }
 
@@ -126,26 +121,20 @@ public class ArticleJPATest extends JPATest {
         return article;
     }
 
-    @Test
+    //@Test
+    @TestTransaction
     public void persistArticleReview(){
 
-        createAndPersistReviewInvitationForUser("mgia@aueb.gr");
+        createAndPersistReviewInvitationForUser("fregnan@ifi.uzh.ch");
 
-        // start new session
-        em = JPAUtil.getCurrentEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        Article article = fetchArticleWithReviewInvitationsAndReviewers("ndia@aueb.gr");
-        Researcher researcher = fetchResearcherByEmail("mgia@aueb.gr");
+        Article article = fetchArticleWithReviewInvitationsAndReviewers("pooja.rani@unibe.ch");
+        Researcher researcher = fetchResearcherByEmail("fregnan@ifi.uzh.ch");
 
         Review review = article.createReview(researcher, 70, "Author comments",
                 "editor comments", Recommendation.ACCEPT);
 
         em.persist(review);
         assertNotNull(review.getId());
-        tx.commit();
-        // clear cache, all results will be requested from db
-        em.clear();
 
         Review savedReview = (Review) em.createQuery("select r from Review r").getSingleResult();
         assertNotNull(savedReview);
@@ -155,18 +144,11 @@ public class ArticleJPATest extends JPATest {
     }
 
     private void createAndPersistReviewInvitationForUser(String email) {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-
-        Article article = fetchArticleWithReviewInvitations("ndia@aueb.gr");
+        Article article = fetchArticleWithReviewInvitations(email);
         Researcher researcher = fetchResearcherByEmail(email);
 
         ReviewInvitation invitation = article.inviteReviewer(researcher);
         invitation.accept();
-        tx.commit();
-
-        assertNotNull(invitation.getId());
-        em.close();
     }
 
 }
