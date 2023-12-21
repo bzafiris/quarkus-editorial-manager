@@ -7,6 +7,7 @@ import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.core.Response;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +54,7 @@ class ArticleResourceTest {
     void removeExistingArticle(){
 
         when()
-                .delete(Fixture.API_ROOT + "/articles/4002")
+                .delete(Fixture.API_ROOT + "/articles/4001")
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
@@ -63,7 +64,24 @@ class ArticleResourceTest {
     void removeNonExistingArticle(){
 
         when()
-                .delete(Fixture.API_ROOT + "/articles/5000")
+                .delete(Fixture.API_ROOT + "/articles/4002")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    public void inviteNewReviewer(){
+        when()
+                .post(Fixture.API_ROOT + "/articles/4000/invite/1002")
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .header("Location", Matchers.matchesPattern(".*/invitations/[0-9]+"));
+    }
+
+    @Test
+    public void denyInvitationToExistingReviewer(){
+        when()
+                .post(Fixture.API_ROOT + "/articles/4000/invite/2000")
                 .then()
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }

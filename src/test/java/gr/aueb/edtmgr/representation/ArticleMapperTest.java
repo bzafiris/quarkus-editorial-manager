@@ -5,6 +5,7 @@ import gr.aueb.edtmgr.domain.Author;
 import gr.aueb.edtmgr.domain.Journal;
 import gr.aueb.edtmgr.domain.Researcher;
 import gr.aueb.edtmgr.persistence.ArticleRepository;
+import gr.aueb.edtmgr.persistence.JPATest;
 import gr.aueb.edtmgr.util.Fixture;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -19,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
-class ArticleMapperTest {
-
-    @Inject
-    private ArticleMapper articleMapper;
+public class ArticleMapperTest extends JPATest {
 
     @Inject
     private ArticleRepository articleRepository;
+
+    @Inject
+    ArticleMapper articleMapper;
 
     private Author findAuthor(List<Author> authors, String email){
         return authors.stream().filter(a -> a.getEmail().contains(email))
@@ -47,7 +48,7 @@ class ArticleMapperTest {
         assertEquals(entity.getCreatedAt(), LocalDate.of(2022, 12, 1));
 
         AuthorRepresentation authorDto = articleRepresentation.authors.get(0);
-
+        assertEquals(1, entity.getAuthors().size());
         Author author = entity.getAuthors().stream().findFirst().get();
         assertEquals(author.getId(), authorDto.id);
         assertEquals(author.getEmail(), authorDto.email);

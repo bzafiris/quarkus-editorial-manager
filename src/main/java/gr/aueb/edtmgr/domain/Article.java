@@ -44,7 +44,7 @@ public class Article {
     )
     private Set<Author> authors = new HashSet<Author>();
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<ReviewInvitation> reviewInvitations = new HashSet<ReviewInvitation>();
 
     public Article() {
@@ -124,6 +124,10 @@ public class Article {
 
     public Set<ReviewInvitation> getReviewInvitations() {
         return new HashSet<>(reviewInvitations);
+    }
+
+    public void clearReviewInvitations(){
+        reviewInvitations.clear();
     }
 
     public ReviewInvitation inviteReviewer(Researcher invitedReviewer) {
