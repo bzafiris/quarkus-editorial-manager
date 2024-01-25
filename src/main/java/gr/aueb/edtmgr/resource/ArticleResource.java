@@ -15,13 +15,19 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import org.jboss.logging.Logger;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Path("articles")
 @RequestScoped
 public class ArticleResource {
+
+    @Inject
+    private Logger log;
 
     @Inject
     private ArticleRepository articleRepository;
@@ -34,6 +40,20 @@ public class ArticleResource {
 
     @Context
     UriInfo uriInfo;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ArticleRepresentation> listArticles(){
+        log.info("List articles");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return articleRepository.listAll()
+                .stream().map(a -> articleMapper.toRepresentation(a))
+                .collect(Collectors.toList());
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
