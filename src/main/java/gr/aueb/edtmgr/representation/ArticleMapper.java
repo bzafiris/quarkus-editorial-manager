@@ -10,15 +10,11 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "jakarta",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-imports = {HashSet.class, Collectors.class})
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class ArticleMapper {
 
     @Inject
     JournalRepository journalRepository;
-
-    @Inject
-    AuthorMapper authorMapper;
 
     @Mapping(target = "journalIssn", source = "journal.issn")
     @Mapping(target = "researcher", source = "correspondentAuthor")
@@ -27,7 +23,6 @@ public abstract class ArticleMapper {
     @Mapping(target = "correspondentAuthor", source = "researcher")
     @Mapping(target = "reviewInvitations", ignore = true)
     @Mapping(target = "journal", ignore = true)
-    @Mapping(target = "authors", expression = "java(dto.authors.stream().map(a -> authorMapper.toModel(a)).collect(Collectors.toSet()))")
     public abstract Article toModel(ArticleRepresentation dto);
 
     @AfterMapping

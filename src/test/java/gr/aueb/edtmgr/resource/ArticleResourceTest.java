@@ -24,6 +24,7 @@ class ArticleResourceTest {
     public void tearDown(){
         SystemDateStub.setStub(null);
     }
+
     @Test
     void submitArticle() {
 
