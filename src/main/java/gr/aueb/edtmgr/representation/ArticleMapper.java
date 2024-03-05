@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "jakarta",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    uses = {AuthorMapper.class, ResearcherMapper.class})
 public abstract class ArticleMapper {
 
     @Inject
