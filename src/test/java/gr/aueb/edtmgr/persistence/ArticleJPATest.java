@@ -23,9 +23,37 @@ public class ArticleJPATest extends JPATest {
 
         Article article = result.get(0);
         assertNotNull(article.getJournal());
+        assertNotNull(article.getCorrespondentAuthor());
 
         Set<Author> authors = article.getAuthors();
         assertEquals(2, authors.size());
     }
+
+    @Test
+    public void listArticlesByCorrespondentAuthor(){
+        Query query = em.createQuery("select a from Article a where a.correspondentAuthor.personalInfo.email=:email");
+        query.setParameter("email", "ndia@aueb.gr");
+        List<Article> result = query.getResultList();
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void fetchArticleWithAuthorsAndCorrespondentAuthor(){
+        Query query = em.createQuery("select a from Article a " +
+                "join fetch a.authors " +
+                "join fetch a.correspondentAuthor r " +
+                "where r.personalInfo.email=:email");
+        query.setParameter("email", "mgia@aueb.gr");
+        List<Article> result = query.getResultList();
+        assertEquals(1, result.size());
+
+        em.close();
+
+        List<Author> authors = new ArrayList<>(result.get(0).getAuthors());
+        Author a = authors.get(0);
+        assertEquals("University of Zurich", a.getAffiliation());
+
+    }
+
 
 }

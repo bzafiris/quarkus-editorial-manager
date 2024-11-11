@@ -32,6 +32,10 @@ public class Article {
     @JoinColumn(name = "journal_id", nullable = false)
     private Journal journal;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "correspondent_author_id", nullable = false)
+    private Researcher correspondentAuthor;
+
     @ManyToMany(cascade = { CascadeType.ALL},
             fetch=FetchType.LAZY)
     @JoinTable(name="article_authors",
@@ -85,6 +89,14 @@ public class Article {
 
     public void setJournal(Journal journal) {
         this.journal = journal;
+    }
+
+    public Researcher getCorrespondentAuthor() {
+        return correspondentAuthor;
+    }
+
+    public void setCorrespondentAuthor(Researcher correspondentAuthor) {
+        this.correspondentAuthor = correspondentAuthor;
     }
 
     public Set<Author> getAuthors() {

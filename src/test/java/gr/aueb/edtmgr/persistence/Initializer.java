@@ -52,6 +52,7 @@ public class Initializer {
                 "Documentation quality\n" +
                 "Systematic literature review");
         article1.setJournal(j1);
+        article1.setCorrespondentAuthor(r1);
         article1.addAuthor(a11);
         article1.addAuthor(a12);
 
@@ -64,6 +65,7 @@ public class Initializer {
                 "Software visualization\n" +
                 "Empirical software engineering");
         article2.setJournal(j1);
+        article2.setCorrespondentAuthor(r2);
         article2.addAuthor(a21);
         article2.addAuthor(a22);
 
