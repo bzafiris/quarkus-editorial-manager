@@ -28,6 +28,9 @@ public class ReviewInvitation {
     @Column(name = "accepted")
     private Boolean accepted = null;
 
+    @OneToOne(mappedBy = "invitation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Review review;
+
     protected ReviewInvitation() {
     }
 
@@ -75,4 +78,11 @@ public class ReviewInvitation {
         this.createdAt = createdAt;
     }
 
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
 }

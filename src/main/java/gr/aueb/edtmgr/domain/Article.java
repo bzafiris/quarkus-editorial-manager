@@ -135,4 +135,34 @@ public class Article {
         reviewInvitations.add(newInvitation);
         return newInvitation;
     }
+
+    public Review createReview(Researcher researcher, int score, String authorComments,
+                               String editorComments, Recommendation recommendation) {
+
+        // search review invitation
+        ReviewInvitation reviewInvitation = null;
+        for(ReviewInvitation invitation: reviewInvitations){
+            if (invitation.getReviewer().equals(researcher)){
+                reviewInvitation = invitation;
+                break;
+            }
+        }
+
+        if (reviewInvitation == null){
+            throw new DomainException("Review creation without invitation is not allowed");
+        }
+
+        if (!reviewInvitation.getAccepted()){
+            throw new DomainException("Review creation for rejected invitation is not allowed");
+        }
+
+        if (reviewInvitation.getReview() != null){
+            throw new DomainException("Review already created for given researcher");
+        }
+
+        Review review = new Review(score, authorComments, editorComments, recommendation);
+        review.setInvitation(reviewInvitation);
+
+        return review;
+    }
 }

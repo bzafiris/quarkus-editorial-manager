@@ -16,6 +16,7 @@ public class Initializer {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
+        em.createNativeQuery("delete from reviews").executeUpdate();
         em.createNativeQuery("delete from review_invitations").executeUpdate();
         em.createNativeQuery("delete from article_authors").executeUpdate();
         em.createNativeQuery("delete from authors").executeUpdate();
