@@ -16,8 +16,8 @@ public class Initializer {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        em.createNativeQuery("delete from users").executeUpdate();
         em.createNativeQuery("delete from journals").executeUpdate();
+        em.createNativeQuery("delete from users").executeUpdate();
 
         tx.commit();
     }
@@ -33,6 +33,7 @@ public class Initializer {
                 "University of Groningen", "avgeriou@gmail.com");
 
         Journal j1 = new Journal("Journal of Systems and Software", "0164-1212");
+        j1.setEditor(e1);
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
