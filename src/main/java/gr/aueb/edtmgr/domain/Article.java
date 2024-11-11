@@ -44,6 +44,9 @@ public class Article {
     )
     private Set<Author> authors = new HashSet<Author>();
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ReviewInvitation> reviewInvitations = new HashSet<ReviewInvitation>();
+
     public Article() {
     }
 
@@ -115,4 +118,21 @@ public class Article {
         authors.remove(author);
     }
 
+    public Set<ReviewInvitation> getReviewInvitations() {
+        return new HashSet<>(reviewInvitations);
+    }
+
+    public ReviewInvitation inviteReviewer(Researcher invitedReviewer) {
+
+        for(ReviewInvitation invitation: reviewInvitations){
+            if (invitation.getReviewer().equals(invitedReviewer)){
+                throw new DomainException("Reviewer already invited");
+            }
+        }
+        ReviewInvitation newInvitation = new ReviewInvitation();
+        newInvitation.setArticle(this);
+        newInvitation.setReviewer(invitedReviewer);
+        reviewInvitations.add(newInvitation);
+        return newInvitation;
+    }
 }
