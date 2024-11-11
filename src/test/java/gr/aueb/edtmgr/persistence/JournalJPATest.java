@@ -13,24 +13,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JournalJPATest {
+public class JournalJPATest extends JPATest {
 
-    EntityManager em;
-
-    @BeforeEach
-    public void setup() {
-
-        Initializer initializer = new Initializer();
-        initializer.prepareData();
-
-        em = JPAUtil.getCurrentEntityManager();
-
-    }
-
-    @AfterEach
-    public void tearDown() {
-        em.close();
-    }
     @Test
     public void listJournals(){
 
