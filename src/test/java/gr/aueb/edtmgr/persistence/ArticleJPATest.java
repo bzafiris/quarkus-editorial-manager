@@ -55,5 +55,56 @@ public class ArticleJPATest extends JPATest {
 
     }
 
+    @Test
+    public void persistArticleWithReviewInvitation(){
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        String researcherEmail = "ndia@aueb.gr";
+        Article article = fetchArticleWithReviewInvitations(researcherEmail);
+
+        String otherResearcherEmail = "mgia@aueb.gr";
+        Researcher otherResearcher = fetchResearcherByEmail(otherResearcherEmail);
+
+        ReviewInvitation invitation = article.inviteReviewer(otherResearcher);
+
+        tx.commit();
+
+        // invitation id should be initialized due to persist cascade
+        assertNotNull(invitation.getId());
+
+        em.close();
+
+        em = JPAUtil.getCurrentEntityManager();
+        // assert saved review invitations
+        ReviewInvitation savedInvitation = em.find(ReviewInvitation.class, invitation.getId());
+        assertNotNull(savedInvitation);
+
+    }
+
+    private Researcher fetchResearcherByEmail(String researcherEmail) {
+        Query query;
+        query = em.createQuery("select r from Researcher r " +
+                "where r.personalInfo.email=:email");
+        query.setParameter("email", researcherEmail);
+        Researcher researcher = (Researcher)query.getSingleResult();
+        return researcher;
+    }
+
+    private Article fetchArticleWithReviewInvitations(String researcherEmail) {
+        // fetch article with correspondent author and review invitations
+        // Notice left join fetch on review invitations, it is required
+        // since review invitations collection may be empty
+        Query query = em.createQuery("select a from Article a " +
+                "left join fetch a.reviewInvitations inv " +
+                "join fetch a.correspondentAuthor r " +
+                "where r.personalInfo.email=:email");
+
+        query.setParameter("email", researcherEmail);
+        List<Article> result = query.getResultList();
+        assertEquals(1, result.size());
+        Article article = result.get(0);
+        return article;
+    }
 
 }
