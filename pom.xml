@@ -17,7 +17,6 @@
     <surefire-plugin.version>3.5.0</surefire-plugin.version>
     <mapstruct.version>1.6.2</mapstruct.version>
     <jacoco.version>0.8.11</jacoco.version>
-    <skipITs>true</skipITs>
   </properties>
   <dependencyManagement>
     <dependencies>
