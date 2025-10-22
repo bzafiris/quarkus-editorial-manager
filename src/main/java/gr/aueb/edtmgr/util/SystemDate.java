@@ -49,6 +49,6 @@ public class SystemDate {
      * @return Η ημερομηνία του συστήματος ή μία προκαθορισμένη ημερομηνία
      */
     public static LocalDate now() {
-        return stub == null ? stub : LocalDate.now();
+        return stub == null ? LocalDate.now() : stub;
     }
 }
