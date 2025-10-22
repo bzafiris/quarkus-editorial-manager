@@ -17,7 +17,7 @@ public class SystemDate {
      */
     protected SystemDate() { }
 
-    private static LocalDate stub = null;
+    private static LocalDate stubObject = null;
 
 
     /**
@@ -30,8 +30,8 @@ public class SystemDate {
      * ως ημερομηνία του συστήματος ή {@code null} για
      * να επιστρέφει την πραγματική ημερομηνία
      */
-    protected static void setStub(LocalDate stubDate) {
-        stub = stubDate;
+    protected static void setStubObject(LocalDate stubDate) {
+        stubObject = stubDate;
         // set stub to parameter
     }
 
@@ -39,7 +39,7 @@ public class SystemDate {
      * Απομακρύνει το στέλεχος.
      */
     protected static void removeStub() {
-        stub = null;
+        stubObject = null;
     }
 
 
@@ -50,6 +50,6 @@ public class SystemDate {
      * @return Η ημερομηνία του συστήματος ή μία προκαθορισμένη ημερομηνία
      */
     public static LocalDate now() {
-        return stub == null ? LocalDate.now() : stub;
+        return stubObject == null ? LocalDate.now() : stubObject;
     }
 }
