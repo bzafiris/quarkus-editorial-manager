@@ -17,7 +17,7 @@ public class SystemDate {
      */
     protected SystemDate() { }
 
-    private static LocalDate stub = null;
+    private static LocalDate stub;
 
 
     /**
