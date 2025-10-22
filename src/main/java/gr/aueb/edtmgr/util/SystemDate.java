@@ -18,8 +18,7 @@ public class SystemDate {
     protected SystemDate() { }
 
     private static LocalDate stubObject = null;
-
-
+    
     /**
      * Θέτει μία συγκεκριμένη ημερομηνία ως την ημερομηνία του συστήματος.
      * Η ημερομηνία αυτή επιστρέφεται από την {@link SystemDate#now()}.
