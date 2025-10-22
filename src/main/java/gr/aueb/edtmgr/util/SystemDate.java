@@ -17,7 +17,7 @@ public class SystemDate {
      */
     protected SystemDate() { }
 
-    private static LocalDate stub;
+    private static LocalDate stub = null;
 
 
     /**
@@ -32,6 +32,7 @@ public class SystemDate {
      */
     protected static void setStub(LocalDate stubDate) {
         stub = stubDate;
+        // set stub to parameter
     }
 
     /**
