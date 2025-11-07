@@ -32,4 +32,21 @@ public class ArticleRepository implements PanacheRepositoryBase<Article, Integer
 
         return article;
     }
+
+    public Article fetchWithAllDependencies(String email){
+
+        Article article = find("join fetch authors " +
+                "    join fetch journal j " +
+                "    join fetch correspondentAuthor r " +
+                "    join fetch reviewInvitations i" +
+                "    join fetch i.review " +
+                "    where r.personalInfo.email=?1", email)
+                .firstResult();
+
+        return article;
+        // "select a from Article a " +
+        //                "join fetch a.authors " +
+        //                "join fetch a.correspondentAuthor r " +
+        //                "where r.personalInfo.email=:email");
+    }
 }

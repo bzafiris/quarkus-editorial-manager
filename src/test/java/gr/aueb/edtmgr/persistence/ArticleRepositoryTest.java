@@ -4,6 +4,8 @@ import gr.aueb.edtmgr.domain.Article;
 import gr.aueb.edtmgr.domain.ReviewInvitation;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +19,18 @@ class ArticleRepositoryTest extends JPATest {
 
     @Inject
     ArticleRepository articleRepository;
+
+    @Inject
+    EntityManager em;
+
+
+    @Test
+    @Transactional
+    void testFetchAll(){
+        Article article = articleRepository.fetchWithAllDependencies("pooja.rani@unibe.ch");
+        assertNotNull(article);
+        assertEquals(2, article.getAuthors().size());
+    }
 
     @Test
     @Transactional
