@@ -7,13 +7,13 @@
 ## Δημιουργία νέου project με JPA εξαρτήσεις
 
 
-Προαπαιτούμενα JDK 11+ και Maven 3.9.5
+Προαπαιτούμενα JDK 17+ και Maven 3.9.5
 
 ```
-mvn io.quarkus.platform:quarkus-maven-plugin:3.15.1:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:3.30.1:create \
     -DprojectGroupId=gr.aueb \
     -DprojectArtifactId=edtmgr \
-    -Dextensions='hibernate-orm,hibernate-orm-panache,jdbc-h2'
+    -Dextensions='rest-jackson,hibernate-orm,hibernate-orm-panache,jdbc-h2'
 ```
 
 
