@@ -4,7 +4,7 @@
 
 Παρουσίαση της πλατφόρμας Quarkus και βασικών APIs όπως το Java Persistence API.
 
-## Δημιουργία νέου project με JPA εξαρτήσεις
+## Δημιουργία νέου project με JAX-RS και JPA εξαρτήσεις
 
 
 Προαπαιτούμενα JDK 17+ και Maven 3.9.5
