@@ -45,11 +45,6 @@ public class ArticleResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<ArticleRepresentation> listArticles(){
         log.info("List articles");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         return articleRepository.listAll()
                 .stream().map(a -> articleMapper.toRepresentation(a))
                 .collect(Collectors.toList());

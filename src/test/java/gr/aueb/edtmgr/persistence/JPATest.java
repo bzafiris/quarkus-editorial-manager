@@ -17,6 +17,7 @@ public class JPATest {
     @Transactional
     @BeforeEach
     public void initDb()  {
+
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("import.sql");
         String sql = convertStreamToString(in);
         try {

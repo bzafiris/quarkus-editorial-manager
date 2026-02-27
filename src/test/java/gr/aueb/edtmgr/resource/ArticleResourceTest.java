@@ -5,6 +5,7 @@ import gr.aueb.edtmgr.util.Fixture;
 import gr.aueb.edtmgr.util.SystemDateStub;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.core.Response;
 import org.hamcrest.Matchers;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -23,6 +25,22 @@ class ArticleResourceTest {
     @AfterEach
     public void tearDown(){
         SystemDateStub.setStub(null);
+    }
+
+    @Test
+    void listAllArticles(){
+
+        List<ArticleRepresentation> result = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(Fixture.API_ROOT + "/articles")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(new TypeRef<List<ArticleRepresentation>>(){});
+
+        assertEquals(2, result.size());
+
     }
 
     @Test
@@ -50,7 +68,7 @@ class ArticleResourceTest {
     /**
      * TBD
      */
-    //@Test
+    @Test
     @TestTransaction
     void removeExistingArticle(){
 

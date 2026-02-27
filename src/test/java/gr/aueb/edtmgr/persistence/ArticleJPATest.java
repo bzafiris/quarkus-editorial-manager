@@ -78,6 +78,7 @@ public class ArticleJPATest extends JPATest {
 
     }
 
+
     private Researcher fetchResearcherByEmail(String mgiaEmail) {
         Query query;
         // fetch researcher mgia
